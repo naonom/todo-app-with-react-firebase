@@ -2,12 +2,28 @@
 import './App.css';
 import { useState } from 'react';
 import classNames from 'classnames';
+import { db } from './firebase';
+import { collection, addDoc, getDocs } from "firebase/firestore";
 
 const getKey = () => Math.random().toString(32).substring(2);
 
 function Todo() {
   const [items, setItems] = useState([]);
   const [filter, setFilter] = useState('ALL');
+
+  const f = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "users"));
+      const todoList = []
+      await querySnapshot.forEach((doc) => {
+        todoList.push(doc.data());
+      });
+      setItems(todoList);
+    } catch (e) {
+      console.log("Error adding document: ", e);
+    }
+  }
+  f()
 
   const handleAdd = text => {
     setItems([...items, { key: getKey(), text, done: false }]);
@@ -60,8 +76,13 @@ function Input({ onAdd }) {
 
   const handleChange = e => setText(e.target.value);
 
-  const handleKeyDown = e => {
+  const handleKeyDown = async e => {
     if (e.key === 'Enter') {
+      await addDoc(collection(db, "todo"), {
+        id: '',
+        text: text,
+        done: false
+      });
       onAdd(text);
       setText('');
     }
