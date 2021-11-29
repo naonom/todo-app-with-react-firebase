@@ -13,7 +13,7 @@ function Todo() {
 
   const f = async () => {
     try {
-      const querySnapshot = await getDocs(collection(db, "users"));
+      const querySnapshot = await getDocs(collection(db, "todo"));
       const todoList = []
       await querySnapshot.forEach((doc) => {
         todoList.push(doc.data());
