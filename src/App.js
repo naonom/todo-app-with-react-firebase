@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import './App.css';
 import { useState } from 'react';
 import classNames from 'classnames';
@@ -33,7 +34,7 @@ function Todo() {
   return (
     <div className="panel">
       <div className="panel-heading">
-        ⚛️ React ToDo
+        <span>⚛️ React ToDo</span>
       </div>
       <Input onAdd={handleAdd} />
       <Filter
